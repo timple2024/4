@@ -1,0 +1,32 @@
+Descriptive Statistics:
+               id  confidence_score
+count  15.000000         15.000000
+mean    8.000000          0.939333
+std     4.472136          0.025486
+min     1.000000          0.890000
+25%     4.500000          0.925000
+50%     8.000000          0.940000
+75%    11.500000          0.955000
+max    15.000000          0.980000
+
+Prediction Counts:
+ model_prediction
+Fake    12
+Real     3
+Name: count, dtype: int64
+
+Average Confidence by Prediction:
+ model_prediction
+Fake    0.949167
+Real    0.900000
+Name: confidence_score, dtype: float64
+
+Confidence Level Breakdown:
+ model_prediction  confidence_level
+Fake              High                10
+                  Low                  2
+Real              Low                  3
+dtype: int64
+
+
+T-Test: T-statistic = 4.7867, P-value = 0.0004
