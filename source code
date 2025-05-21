@@ -1,0 +1,53 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import ttest_ind
+
+# Create DataFrame
+data = {
+    "id": list(range(1, 16)),
+    "title": [
+        "Aliens Found on Mars?", "Vaccine Turns People Magnetic", "UN Approves Climate Deal",
+        "Celebrity Endorses Miracle Pill", "Stock Market Crash Predicted", "New Planet Discovered",
+        "Cure for Cancer Suppressed", "Bitcoin to Replace Dollar", "Robot Becomes CEO",
+        "Ancient City Found in Amazon", "Government Controls Weather", "New Tech Reads Minds",
+        "Alien Spaceship Seen in Sky", "Elections Rigged by AI", "Scientists Create Black Hole"
+    ],
+    "model_prediction": [
+        "Fake", "Fake", "Real", "Fake", "Fake", "Real",
+        "Fake", "Fake", "Fake", "Real", "Fake", "Fake",
+        "Fake", "Fake", "Fake"
+    ],
+    "confidence_score": [
+        0.96, 0.94, 0.91, 0.95, 0.93, 0.90,
+        0.97, 0.92, 0.95, 0.89, 0.94, 0.96,
+        0.98, 0.95, 0.94
+    ]
+}
+df = pd.DataFrame(data)
+
+# Descriptive Analysis
+print("Descriptive Statistics:\n", df.describe())
+print("\nPrediction Counts:\n", df['model_prediction'].value_counts())
+
+# Diagnostic Analysis
+print("\nAverage Confidence by Prediction:\n", df.groupby('model_prediction')['confidence_score'].mean())
+
+# Predictive-like Analysis
+df['confidence_level'] = df['confidence_score'].apply(lambda x: 'High' if x > 0.93 else 'Low')
+print("\nConfidence Level Breakdown:\n", df.groupby(['model_prediction', 'confidence_level']).size())
+
+# Exploratory Data Analysis - Plot
+sns.histplot(data=df, x='confidence_score', hue='model_prediction', bins=5, kde=True)
+plt.title("Confidence Score Distribution by Prediction")
+plt.xlabel("Confidence Score")
+plt.ylabel("Frequency")
+plt.tight_layout()
+plt.savefig("confidence_score_distribution.png")
+plt.show()
+
+# Inferential Analysis - T-test
+fake_scores = df[df['model_prediction'] == 'Fake']['confidence_score']
+real_scores = df[df['model_prediction'] == 'Real']['confidence_score']
+t_stat, p_value = ttest_ind(fake_scores, real_scores)
+print(f"\nT-Test: T-statistic = {t_stat:.4f}, P-value = {p_value:.4f}")
